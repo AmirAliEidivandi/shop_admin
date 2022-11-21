@@ -1,4 +1,3 @@
-import React from "react";
 import { Paper, List, Divider } from "@material-ui/core";
 import Products from "../menu/products/Products";
 import Orders from "../menu/orders/Orders";
