@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FormControl, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@material-ui/core";
+import { FormControl, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { AddBox } from "@material-ui/icons";
+import { AddBox, Save } from "@material-ui/icons";
 import Content from "../partials/Content";
 import { useCategoriesState } from "./context";
 import AttributeGroup from "./attribute/AttributeGroup";
@@ -85,6 +85,11 @@ const CategoriesContent = () => {
                     اضافه کردن دسته بندی ویژگی ها
                 </Button>
             </FormControl>
+            <Grid container justify="flex-end">
+                <Button color="default" variant="contained" startIcon={<Save />}>
+                    ذخیره سازی
+                </Button>
+            </Grid>
         </Content>
     );
 };

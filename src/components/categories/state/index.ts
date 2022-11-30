@@ -35,10 +35,25 @@ export const reducer = (state: CategoriesState, action: Action): CategoriesState
         case "ADD_ATTRIBUTE":
             newState = {
                 ...state,
-                groups: state.groups.map((group) => {
+                groups: state.groups?.map((group) => {
                     if (group.hash === action.payload.groupID) {
                         return { ...group, attributes: [...group.attributes, action.payload.attribute] };
                     }
+                    return group;
+                }),
+            };
+            break;
+        case "UPDATE_ATTRIBUTE":
+            newState = {
+                ...state,
+                groups: state.groups.map((group) => {
+                    const newAttributes = group.attributes?.map((attr) => {
+                        if (attr.hash === action.payload.attributeID) {
+                            return { ...attr, ...action.payload.data };
+                        }
+                        return attr;
+                    });
+                    group.attributes = newAttributes;
                     return group;
                 }),
             };
