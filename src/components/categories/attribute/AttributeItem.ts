@@ -1,7 +1,7 @@
 export default interface AttributeItem {
+    hash: string;
     title: string;
     slug: string;
-    type: number;
     filterable: boolean;
     hasPrice: boolean;
 }

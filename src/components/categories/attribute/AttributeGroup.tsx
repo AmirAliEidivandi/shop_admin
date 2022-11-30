@@ -4,6 +4,7 @@ import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AddBox } from "@material-ui/icons";
 import AttributeItem from "./AttributeItem";
 import Attribute from "./Attribute";
+import { v4 as uuid } from "uuid";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -30,11 +31,11 @@ const AttributeGroup: React.FC<AttributeGroupProps> = ({ title }: AttributeGroup
 
         setAttributes((prev) => {
             return [
-                ...attributes,
+                ...prev,
                 {
-                    title: "رنگ",
-                    slug: "color",
-                    type: 1,
+                    hash: uuid(),
+                    title: "",
+                    slug: "",
                     filterable: true,
                     hasPrice: false,
                 },
@@ -48,8 +49,8 @@ const AttributeGroup: React.FC<AttributeGroupProps> = ({ title }: AttributeGroup
                 {title}
             </Typography>
             <Divider />
-            {attributes?.map((attribute: AttributeItem, index) => (
-                <Attribute key={index} />
+            {attributes?.map((attribute: AttributeItem) => (
+                <Attribute key={attribute.hash} {...attribute} />
             ))}
             <FormControl className={styles.formControl}>
                 <Button onClick={addNewAttribute} variant="contained" color="primary" startIcon={<AddBox />}>
