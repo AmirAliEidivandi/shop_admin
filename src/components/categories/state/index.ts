@@ -1,18 +1,15 @@
 import AttributeGroupInterface from "../attribute/AttributeGroupInterface";
+import { v4 as uuid } from "uuid";
+import Action from "../../../contracts/Action";
 
 export interface CategoriesState {
     groups: AttributeGroupInterface[];
 }
 
-export interface Action {
-    type: string;
-    payload: any;
-}
-
 export const initState: CategoriesState = {
     groups: [
         {
-            hash: "dalkfj038ajrfkjadffljaoer0ahff",
+            hash: uuid(),
             title: "مشخصات کلی",
             attributes: [],
         },
@@ -38,14 +35,12 @@ export const reducer = (state: CategoriesState, action: Action): CategoriesState
         case "ADD_ATTRIBUTE":
             newState = {
                 ...state,
-                groups: [
-                    ...state.groups,
-                    {
-                        hash: action.payload.hash,
-                        title: action.payload.title,
-                        attributes: [],
-                    },
-                ],
+                groups: state.groups.map((group) => {
+                    if (group.hash === action.payload.groupID) {
+                        return { ...group, attributes: [...group.attributes, action.payload.attribute] };
+                    }
+                    return group;
+                }),
             };
             break;
         default:

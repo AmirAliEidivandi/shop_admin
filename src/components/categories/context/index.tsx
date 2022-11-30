@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Action, CategoriesState, initState, reducer } from "../state";
+import { CategoriesState, initState, reducer } from "../state";
+import Action from "../../../contracts/Action";
 
 interface CategoriesContextProps {
     state: CategoriesState;
