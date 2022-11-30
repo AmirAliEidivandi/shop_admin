@@ -5,6 +5,7 @@ import { AddBox } from "@material-ui/icons";
 import Content from "../partials/Content";
 import { useCategoriesState } from "./context";
 import AttributeGroup from "./attribute/AttributeGroup";
+import { v4 as uuid } from "uuid";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -37,7 +38,7 @@ const CategoriesContent = () => {
         if (title !== "") {
             dispatch({
                 type: "ADD_ATTRIBUTE_CATEGORI",
-                payload: { title },
+                payload: { hash: uuid(), title },
             });
             setOpen(false);
         }
@@ -76,8 +77,8 @@ const CategoriesContent = () => {
             <FormControl fullWidth className={styles.formRow}>
                 <TextField variant="outlined" id="category_title_en" label="عنوان دسته بندی - انگلیسی" />
             </FormControl>
-            {state.groups?.map((group, index) => (
-                <AttributeGroup key={index} title={group.title} />
+            {state.groups?.map((group) => (
+                <AttributeGroup key={group.hash} {...group} />
             ))}
             <FormControl className={styles.formRow}>
                 <Button onClick={openDialog} color="primary" variant="contained" startIcon={<AddBox />}>

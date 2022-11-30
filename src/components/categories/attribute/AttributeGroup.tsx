@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Typography, Divider, FormControl, Button } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AddBox } from "@material-ui/icons";
 import AttributeItem from "./AttributeItem";
 import Attribute from "./Attribute";
 import { v4 as uuid } from "uuid";
+import { useCategoriesState } from "../context";
+import AttributeGroupInterface from "./AttributeGroupInterface";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -18,28 +20,24 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-interface AttributeGroupProps {
-    title: string;
-}
-
-const AttributeGroup: React.FC<AttributeGroupProps> = ({ title }: AttributeGroupProps) => {
-    const [attributes, setAttributes] = useState<AttributeItem[]>([]);
+const AttributeGroup: React.FC<AttributeGroupInterface> = ({ title, hash, attributes }: AttributeGroupInterface) => {
+    const { state, dispatch } = useCategoriesState();
     const styles = useStyles();
 
     const addNewAttribute = (e: React.MouseEvent) => {
         e.preventDefault();
-
-        setAttributes((prev) => {
-            return [
-                ...prev,
-                {
+        dispatch({
+            type: "ADD_ATTRIBUTE",
+            payload: {
+                groupID: hash,
+                attribute: {
                     hash: uuid(),
                     title: "",
                     slug: "",
-                    filterable: true,
-                    hasPrice: false,
+                    filterable: false,
+                    hasPrice: true,
                 },
-            ];
+            },
         });
     };
 

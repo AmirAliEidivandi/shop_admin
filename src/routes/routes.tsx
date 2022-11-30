@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import EditCategory from "../components/products/EditCategory";
+import EditCategory from "../components/categories/EditCategory";
 import Products from "../components/products/Products";
 
 interface RouteItem {

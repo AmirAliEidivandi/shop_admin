@@ -1,7 +1,7 @@
-import AttributeGroup from "../AttributGroup";
+import AttributeGroupInterface from "../attribute/AttributeGroupInterface";
 
 export interface CategoriesState {
-    groups: AttributeGroup[];
+    groups: AttributeGroupInterface[];
 }
 
 export interface Action {
@@ -12,6 +12,7 @@ export interface Action {
 export const initState: CategoriesState = {
     groups: [
         {
+            hash: "dalkfj038ajrfkjadffljaoer0ahff",
             title: "مشخصات کلی",
             attributes: [],
         },
@@ -27,6 +28,20 @@ export const reducer = (state: CategoriesState, action: Action): CategoriesState
                 groups: [
                     ...state.groups,
                     {
+                        hash: action.payload.hash,
+                        title: action.payload.title,
+                        attributes: [],
+                    },
+                ],
+            };
+            break;
+        case "ADD_ATTRIBUTE":
+            newState = {
+                ...state,
+                groups: [
+                    ...state.groups,
+                    {
+                        hash: action.payload.hash,
                         title: action.payload.title,
                         attributes: [],
                     },
