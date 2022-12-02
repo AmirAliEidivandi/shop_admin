@@ -10,11 +10,11 @@ interface RouteItem {
 const routes: RouteItem[] = [
     {
         path: "/products",
-        component: Products,
+        component: <Products />,
     },
     {
         path: "/categories/edit",
-        component: EditCategory,
+        component: <EditCategory />,
     },
 ];
 

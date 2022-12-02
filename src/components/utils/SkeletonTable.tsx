@@ -13,7 +13,7 @@ const SkeletonTable: React.FC<SkeletonTableProps> = ({ columns, rows }: Skeleton
             <Grid container spacing={5}>
                 {[1, 2, 3, 4, 5, 6].map((item, i) => {
                     return (
-                        <Grid key={i} item md={2} justify="center">
+                        <Grid key={i} item md={2}>
                             <Skeleton component="div" style={{ margin: "0 auto" }} width={40} height={40} variant="circle" animation="wave" />
                         </Grid>
                     );
