@@ -1,4 +1,4 @@
-import CategoriesContent from "./CategoriesContext";
+import CategoriesContent from "./CategoriesContent";
 import { CategoriesProvider } from "./context";
 
 const EditCategory = () => {

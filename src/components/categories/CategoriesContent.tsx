@@ -6,6 +6,7 @@ import Content from "../partials/Content";
 import { useCategoriesState } from "./context";
 import AttributeGroup from "./attribute/AttributeGroup";
 import { v4 as uuid } from "uuid";
+import axios from "axios";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -44,6 +45,24 @@ const CategoriesContent = () => {
         }
     };
 
+    const updateTitle = (title: string) => {
+        dispatch({
+            type: "UPDATE_TITLE",
+            payload: {
+                title,
+            },
+        });
+    };
+
+    const updateSlug = (slug: string) => {
+        dispatch({
+            type: "UPDATE_SLUG",
+            payload: {
+                slug,
+            },
+        });
+    };
+
     return (
         <Content title="ویرایش / اضافه کردن دسته بندی">
             <Dialog open={open} aria-labelledby="form-dialog-title">
@@ -72,10 +91,24 @@ const CategoriesContent = () => {
             </Dialog>
 
             <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="category_title_fa" label="عنوان دسته بندی - فارسی" />
+                <TextField
+                    variant="outlined"
+                    id="title"
+                    name="title"
+                    label="عنوان - فارسی"
+                    defaultValue={state.title}
+                    onBlur={(event: React.FocusEvent<HTMLInputElement>) => updateTitle(event.currentTarget.value)}
+                />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="category_title_en" label="عنوان دسته بندی - انگلیسی" />
+                <TextField
+                    variant="outlined"
+                    id="slug"
+                    name="slug"
+                    label="اسلاگ - انگلیسی"
+                    defaultValue={state.slug}
+                    onBlur={(event: React.FocusEvent<HTMLInputElement>) => updateSlug(event.currentTarget.value)}
+                />
             </FormControl>
             {state.groups?.map((group) => (
                 <AttributeGroup key={group.hash} {...group} />

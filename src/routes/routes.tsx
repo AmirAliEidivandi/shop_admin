@@ -21,7 +21,7 @@ const routes: RouteItem[] = [
 const RenderRoutes = () => {
     return (
         <Routes>
-            {routes.map((route: RouteItem, i) => (
+            {routes?.map((route: RouteItem, i) => (
                 <Route key={i} path={route.path} element={route.component} />
             ))}
         </Routes>

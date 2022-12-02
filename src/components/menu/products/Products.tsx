@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Products = () => {
     const [open, setOpen] = useState(true);
     const classes = useStyles();
+    
     return (
         <React.Fragment>
             <ListItem
@@ -38,7 +39,7 @@ const Products = () => {
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List disablePadding component="div">
-                    <Link className={classes.linkItem} to="/products/edit">
+                    <Link className={classes.linkItem} to={"/products/edit"}>
                         <ListItem button className={classes.nested}>
                             <ListItemIcon>
                                 <AddBox />
@@ -46,7 +47,7 @@ const Products = () => {
                             <ListItemText classes={{ primary: classes.nestedText }} primary="محصول جدید" />
                         </ListItem>
                     </Link>
-                    <Link className={classes.linkItem} to="/products">
+                    <Link className={classes.linkItem} to={"/products"}>
                         <ListItem button className={classes.nested}>
                             <ListItemIcon>
                                 <ListIcon />
@@ -54,7 +55,7 @@ const Products = () => {
                             <ListItemText classes={{ primary: classes.nestedText }} primary="لیست محصولات" />
                         </ListItem>
                     </Link>
-                    <Link to="/categories/edit" className={classes.linkItem}>
+                    <Link to={"/categories/edit"} className={classes.linkItem}>
                         <ListItem button className={classes.nested}>
                             <ListItemIcon>
                                 <AddBox />
@@ -62,7 +63,7 @@ const Products = () => {
                             <ListItemText classes={{ primary: classes.nestedText }} primary="دسته بندی جدید" />
                         </ListItem>
                     </Link>
-                    <Link to="/categories" className={classes.linkItem}>
+                    <Link to={"/categories"} className={classes.linkItem}>
                         <ListItem button className={classes.nested}>
                             <ListItemIcon>
                                 <Category />

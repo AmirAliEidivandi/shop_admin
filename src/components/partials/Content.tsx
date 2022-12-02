@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
-function Content({ title, children }: React.PropsWithChildren<ContentProps>) {
+const Content = ({ title, children }: React.PropsWithChildren<ContentProps>) => {
     const classes = useStyles();
     return (
         <Paper elevation={0}>
@@ -26,11 +26,11 @@ function Content({ title, children }: React.PropsWithChildren<ContentProps>) {
                 {title}
             </Typography>
             <Divider />
-            <Box component="div" className={classes.paperContent}>
+            <Box component={"div"} className={classes.paperContent}>
                 {children}
             </Box>
         </Paper>
     );
-}
+};
 
 export default Content;

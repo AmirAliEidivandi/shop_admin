@@ -3,10 +3,14 @@ import { v4 as uuid } from "uuid";
 import Action from "../../../contracts/Action";
 
 export interface CategoriesState {
+    title: string;
+    slug: string;
     groups: AttributeGroupInterface[];
 }
 
 export const initState: CategoriesState = {
+    title: "",
+    slug: "",
     groups: [
         {
             hash: uuid(),
@@ -57,6 +61,12 @@ export const reducer = (state: CategoriesState, action: Action): CategoriesState
                     return group;
                 }),
             };
+            break;
+        case "UPDATE_TITLE":
+            newState = { ...state, title: action.payload.title };
+            break;
+        case "UPDATE_SLUG":
+            newState = { ...state, slug: action.payload.slug };
             break;
         default:
             throw new Error(`${action.type} is not defined in this state`);
