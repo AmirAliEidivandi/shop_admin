@@ -1,9 +1,14 @@
-import axios from 'axios'
+import axios, { AxiosInstance, AxiosResponse } from "axios";
 
 export default class Http {
-    constructor(private baseURL: string) {
-        this.baseURL = 'http://localhost:8080'
+    private baseURL: string;
+    private instance: AxiosInstance;
+    constructor() {
+        this.baseURL = "http://localhost:8080/";
+        this.instance = axios.create();
     }
 
-    post (params: object) {}
+    public post(endpoint: string, params: object): Promise<AxiosResponse> {
+        return this.instance.post(`${this.baseURL}${endpoint}`, params);
+    }
 }

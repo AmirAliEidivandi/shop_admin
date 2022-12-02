@@ -7,6 +7,7 @@ import { useCategoriesState } from "./context";
 import AttributeGroup from "./attribute/AttributeGroup";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
+import Http from "../../services/Http";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,6 +62,17 @@ const CategoriesContent = () => {
                 slug,
             },
         });
+    };
+
+    const saveCategory = () => {
+        const httpClient = new Http();
+        httpClient
+            .post("api/v1/categories", {
+                ...state,
+            })
+            .then((res) => {
+                console.log({ res });
+            });
     };
 
     return (
@@ -119,7 +131,7 @@ const CategoriesContent = () => {
                 </Button>
             </FormControl>
             <Grid container justify="flex-end">
-                <Button color="default" variant="contained" startIcon={<Save />}>
+                <Button onClick={saveCategory} color="default" variant="contained" startIcon={<Save />}>
                     ذخیره سازی
                 </Button>
             </Grid>
