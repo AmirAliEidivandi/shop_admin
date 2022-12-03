@@ -11,4 +11,8 @@ export default class Http {
     public post(endpoint: string, params: object): Promise<AxiosResponse> {
         return this.instance.post(`${this.baseURL}${endpoint}`, params);
     }
+
+    public get(endpoint: string): Promise<AxiosResponse> {
+        return this.instance.get(`${this.baseURL}${endpoint}`);
+    }
 }

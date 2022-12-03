@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import Categories from "../components/categories/Categories";
 import EditCategory from "../components/categories/EditCategory";
 import Products from "../components/products/Products";
 
@@ -15,6 +16,10 @@ const routes: RouteItem[] = [
     {
         path: "/categories/edit",
         component: <EditCategory />,
+    },
+    {
+        path: "/categories",
+        component: <Categories />,
     },
 ];
 

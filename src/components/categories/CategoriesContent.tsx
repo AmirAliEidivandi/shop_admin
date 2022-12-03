@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { FormControl, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@material-ui/core";
+import { FormControl, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Snackbar } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AddBox, Save } from "@material-ui/icons";
 import Content from "../partials/Content";
 import { useCategoriesState } from "./context";
 import AttributeGroup from "./attribute/AttributeGroup";
 import { v4 as uuid } from "uuid";
-import axios from "axios";
+// import axios from "axios";
 import Http from "../../services/Http";
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -19,14 +20,19 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const CategoriesContent = () => {
     const { state, dispatch } = useCategoriesState();
-    const [open, setOpen] = useState<boolean>(false);
     const [title, setTitle] = useState<string>("");
+    const [open, setOpen] = useState<boolean>(false);
+    const [showNotify, setShowNotify] = useState<boolean>(false);
     const styles = useStyles();
 
     const handleClose = (e: React.MouseEvent) => {
         e.preventDefault();
 
         setOpen(false);
+    };
+
+    const handleCloseAlert = () => {
+        setShowNotify(false);
     };
 
     const openDialog = (e: React.MouseEvent) => {
@@ -71,12 +77,18 @@ const CategoriesContent = () => {
                 ...state,
             })
             .then((res) => {
-                console.log({ res });
-            });
+                setShowNotify(true);
+            })
+            .catch((err) => console.log(err.message));
     };
 
     return (
         <Content title="ویرایش / اضافه کردن دسته بندی">
+            <Snackbar open={showNotify} autoHideDuration={3000} onClose={handleCloseAlert}>
+                <Alert variant="filled" elevation={6} severity="success">
+                    دسته بندی با موفقیت ذخیره شد
+                </Alert>
+            </Snackbar>
             <Dialog open={open} aria-labelledby="form-dialog-title">
                 <DialogTitle id="form-dialog-title">عنوان دسته بندی ویژگی ها</DialogTitle>
                 <DialogContent>

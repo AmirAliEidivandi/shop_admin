@@ -1,7 +1,7 @@
 import React from "react";
-import { Box, Typography, Divider, FormControl, Button } from "@material-ui/core";
+import { Box, Typography, Divider, FormControl, Button, IconButton, Snackbar } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { AddBox } from "@material-ui/icons";
+import { AddBox, Delete } from "@material-ui/icons";
 import AttributeItem from "./AttributeItem";
 import Attribute from "./Attribute";
 import { v4 as uuid } from "uuid";
@@ -41,10 +41,22 @@ const AttributeGroup: React.FC<AttributeGroupInterface> = ({ title, hash, attrib
         });
     };
 
+    const deleteAttributeGroup = (e: React.MouseEvent) => {
+        dispatch({
+            type: "DELETE_ATTRIBUTE_GROUP",
+            payload: {
+                hash,
+            },
+        });
+    };
+
     return (
         <Box>
             <Typography variant="h6" className={styles.title}>
                 {title}
+                <IconButton aria-label="حذف کردن" onClick={deleteAttributeGroup}>
+                    <Delete />
+                </IconButton>
             </Typography>
             <Divider />
             {attributes?.map((attribute: AttributeItem) => (
