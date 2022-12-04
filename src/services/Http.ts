@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosResponse } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from "axios";
 
 export default class Http {
     private baseURL: string;
@@ -12,7 +12,7 @@ export default class Http {
         return this.instance.post(`${this.baseURL}${endpoint}`, params);
     }
 
-    public get(endpoint: string): Promise<AxiosResponse> {
-        return this.instance.get(`${this.baseURL}${endpoint}`);
+    public get<T, R = AxiosResponse<T>>(endpoint: string, config?: AxiosRequestConfig): Promise<R> {
+        return this.instance.get(`${this.baseURL}${endpoint}`, config);
     }
 }

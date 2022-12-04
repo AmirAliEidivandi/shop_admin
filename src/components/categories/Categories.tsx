@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { TableContainer, TableHead, TableRow, TableCell, Table, Paper, TableBody } from "@material-ui/core";
+import { useState, useEffect } from "react";
 import Content from "../partials/Content";
 import Http from "../../services/Http";
 import SkeletonTable from "../utils/SkeletonTable";
-
-interface CategoryItem {
-    hash: string;
-    title: string;
-    slug: string;
-}
+import CategoryItem from "../contracts/CategoryItem";
+import Table from "../utils/Table";
 
 const Categories = () => {
     const [categories, setCategories] = useState<CategoryItem[]>([]);
@@ -16,7 +11,7 @@ const Categories = () => {
     const http = new Http();
 
     useEffect(() => {
-        http.get("api/v1/categories")
+        http.get<CategoryItem[]>("api/v1/categories")
             .then((res) => {
                 setCategories(res.data);
                 setIsLoading(false);
@@ -27,29 +22,7 @@ const Categories = () => {
     return (
         <Content title="لیست دسته بندی ها">
             {isLoading && <SkeletonTable />}
-            {!isLoading && (
-                <TableContainer component={Paper}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>عنوان</TableCell>
-                                <TableCell>slug</TableCell>
-                                <TableCell>عملیات</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {categories?.map((category) => {
-                                return (
-                                    <TableRow key={category.hash}>
-                                        <TableCell>{category.title}</TableCell>
-                                        <TableCell>{category.slug}</TableCell>
-                                    </TableRow>
-                                );
-                            })}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            )}
+            {!isLoading && <Table columns={["اسلاگ", "عنوان"]} data={categories} attributes={["title", "slug"]} />}
         </Content>
     );
 };

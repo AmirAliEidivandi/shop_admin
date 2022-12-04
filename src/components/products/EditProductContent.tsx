@@ -6,6 +6,7 @@ import HttpClient from "../../services/Http";
 import { v4 as uuid } from "uuid";
 import Section from "../partials/Section";
 import ImageInput from "../partials/ImageInput";
+import CategoryItem from "../contracts/CategoryItem";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -24,6 +25,20 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const EditProductContent = () => {
     const styles = useStyles();
+    const [categories, setCategories] = useState<CategoryItem[]>([]);
+    const api = new HttpClient();
+
+    useEffect(() => {
+        api.get<CategoryItem[]>("api/v1/categories")
+            .then((res) => {
+                setCategories(res.data);
+            })
+            .catch((err) => {
+                // TODO: replace this error with another handler
+                console.log(err.message);
+            });
+    }, []);
+
     const updateCategory = (e: React.ChangeEvent) => {};
 
     return (
@@ -32,10 +47,7 @@ const EditProductContent = () => {
                 <TextField variant="outlined" id="title" name="title" label="عنوان محصول" />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="slug" name="slug" label="عنوان محصول به انگلیسی" />
-            </FormControl>
-            <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="price" name="price" defaultValue={0} label="قیمت به ریال" />
+                <TextField variant="outlined" id="price" name="price" label="قیمت به ریال" />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
                 <TextField variant="outlined" id="discounted_price" name="discounted_price" defaultValue={0} label="قیمت ویژه به ریال" />
@@ -47,7 +59,12 @@ const EditProductContent = () => {
                 <FormControl fullWidth className={styles.formRow}>
                     <InputLabel id="category_label">دسته بندی</InputLabel>
                     <Select labelId="category_label" id="category_label">
-                        <MenuItem value={100}>Category</MenuItem>
+                        <MenuItem value={0}>دسته بندی را انتخاب کنید</MenuItem>
+                        {categories?.map((category: CategoryItem) => (
+                            <MenuItem key={category.id} value={category.id}>
+                                {category.title}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
             </Grid>

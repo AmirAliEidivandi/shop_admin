@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { Box } from "@material-ui/core";
 import placeholder from "../../assets/images/placeholder.jpg";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
@@ -26,8 +26,8 @@ interface ImageInputProps {
 
 export default function ImageInput({ onChange }: ImageInputProps) {
     const styles = useStyles();
-    const filesRef = React.useRef<HTMLInputElement>(null);
-    const [imagePreviewSrc, setImagePreviewSrc] = React.useState<string>(placeholder);
+    const filesRef = useRef<HTMLInputElement>(null);
+    const [imagePreviewSrc, setImagePreviewSrc] = useState<string>(placeholder);
     const handleChange = (e: React.ChangeEvent) => {
         if (filesRef.current) {
             const files = filesRef.current.files as FileList;
