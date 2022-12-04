@@ -79,10 +79,22 @@ const EditProductContent = () => {
 
         const form = new FormData();
         form.append("thumbnail", thumbnail as Blob);
-
         gallery.forEach((file: File) => {
             form.append("gallery[]", file as Blob);
         });
+
+        api.post("api/v1/products", form, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                // TODO: replace with error handler
+                console.log(err.message);
+            });
     };
 
     return (

@@ -8,8 +8,8 @@ export default class Http {
         this.instance = axios.create();
     }
 
-    public post(endpoint: string, params: object): Promise<AxiosResponse> {
-        return this.instance.post(`${this.baseURL}${endpoint}`, params);
+    public post<T, B, R = AxiosResponse<T>>(endpoint: string, data?: B, config?: AxiosRequestConfig): Promise<R> {
+        return this.instance.post(`${this.baseURL}${endpoint}`, data, config)
     }
 
     public get<T, R = AxiosResponse<T>>(endpoint: string, config?: AxiosRequestConfig): Promise<R> {
