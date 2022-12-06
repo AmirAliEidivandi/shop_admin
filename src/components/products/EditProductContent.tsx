@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Content from "../partials/Content";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Divider, Button } from "@material-ui/core";
-import HttpClient from "../../services/Http";
+import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Divider, Button, LinearProgress } from "@material-ui/core";
 import { v4 as uuid } from "uuid";
+import { debounce } from "lodash";
+import Content from "../partials/Content";
+import HttpClient from "../../services/Http";
 import Section from "../partials/Section";
 import ImageInput from "../partials/ImageInput";
 import CategoryItem from "../contracts/CategoryItem";
@@ -24,10 +25,12 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface AttributeItem {
+    hash: string;
     title: string;
     slug: string;
     filterable: boolean;
     hasPrice: boolean;
+    value: string;
 }
 
 interface ProductAttributes {
@@ -42,6 +45,11 @@ const EditProductContent = () => {
     const [productAttributes, setProductAttributes] = useState<ProductAttributes[]>([]);
     const [thumbnail, setThumbnail] = useState<File | null>(null);
     const [gallery, setGallery] = useState<File[]>([]);
+    const [progress, setProgress] = useState<number>(0);
+    const [title, setTitle] = useState<string>("");
+    const [price, setPrice] = useState<number>(0);
+    const [discountedPrice, setDiscountedPrice] = useState<number>(0);
+    const [stock, setStock] = useState<number>(0);
 
     useEffect(() => {
         api.get<CategoryItem[]>("api/v1/categories")
@@ -53,6 +61,19 @@ const EditProductContent = () => {
                 console.log(err.message);
             });
     }, []);
+
+    const updateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
+    };
+    const updatePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPrice(e.target.value as unknown as number);
+    };
+    const updateDiscountedPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setDiscountedPrice(e.target.value as unknown as number);
+    };
+    const updateStock = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setStock(e.target.value as unknown as number);
+    };
 
     const updateCategory = (e: React.ChangeEvent<{ value: unknown }>) => {
         api.get<ProductAttributes[]>(`api/v1/categories/${e.target.value}/attributes`)
@@ -78,14 +99,23 @@ const EditProductContent = () => {
         e.preventDefault();
 
         const form = new FormData();
+        form.append("title", title);
+        form.append("price", price as unknown as string);
+        form.append("discountedPrice", discountedPrice as unknown as string);
+        form.append("stock", stock as unknown as string);
         form.append("thumbnail", thumbnail as Blob);
         gallery.forEach((file: File) => {
             form.append("gallery[]", file as Blob);
         });
+        form.append("attributes", JSON.stringify(productAttributes));
 
         api.post("api/v1/products", form, {
             headers: {
                 "Content-Type": "multipart/form-data",
+            },
+            onUploadProgress: (ProgressEvent: any) => {
+                const percent = Math.round((ProgressEvent.loaded * 100) / ProgressEvent.total);
+                setProgress(percent as number);
             },
         })
             .then((res) => {
@@ -97,19 +127,39 @@ const EditProductContent = () => {
             });
     };
 
+    const handleAttributeChange = (e: React.ChangeEvent<HTMLInputElement>, hash: string) => {
+        updateAttributeByHash(hash, e.target.value);
+    };
+    const updateAttributeByHash = debounce((hash: string, value: string) => {
+        console.log(hash, value);
+        setProductAttributes(
+            productAttributes.map((group: ProductAttributes) => {
+                const newAttribute = group.attributes.map((attribute: AttributeItem) => {
+                    if (attribute.hash === hash) {
+                        return { ...attribute, value };
+                    }
+                    return attribute;
+                });
+                group.attributes = newAttribute;
+                return group;
+            })
+        );
+    }, 1000);
+
     return (
         <Content title="ویرایش / اضافه کردن محصول">
+            <LinearProgress variant="determinate" value={progress} style={{ marginBottom: "10px" }} />
             <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="title" name="title" label="عنوان محصول" />
+                <TextField onChange={updateTitle} variant="outlined" id="title" name="title" label="عنوان محصول" />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="price" name="price" label="قیمت به ریال" />
+                <TextField onChange={updatePrice} variant="outlined" id="price" name="price" label="قیمت به ریال" />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="discounted_price" name="discounted_price" defaultValue={0} label="قیمت ویژه به ریال" />
+                <TextField onChange={updateDiscountedPrice} variant="outlined" id="discounted_price" name="discounted_price" defaultValue={0} label="قیمت ویژه به ریال" />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField variant="outlined" id="stock" name="stock" defaultValue={0} label="موجودی" />
+                <TextField onChange={updateStock} variant="outlined" id="stock" name="stock" defaultValue={0} label="موجودی" />
             </FormControl>
             <Grid xs={6}>
                 <FormControl fullWidth className={styles.formRow}>
@@ -150,7 +200,13 @@ const EditProductContent = () => {
                                 return (
                                     <>
                                         <FormControl fullWidth className={styles.formRow}>
-                                            <TextField variant="outlined" label={attribute.title} />
+                                            <TextField
+                                                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                    handleAttributeChange(e, attribute.hash);
+                                                }}
+                                                variant="outlined"
+                                                label={attribute.title}
+                                            />
                                         </FormControl>
                                     </>
                                 );
