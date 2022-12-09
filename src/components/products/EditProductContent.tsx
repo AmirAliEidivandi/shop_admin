@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import { FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography, Divider, Button, LinearProgress } from "@material-ui/core";
+import {
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+    Divider,
+    Button,
+    LinearProgress,
+    ButtonGroup,
+    Dialog,
+    DialogTitle,
+    FormLabel,
+    RadioGroup,
+    Radio,
+    FormControlLabel,
+    DialogContent,
+    DialogActions,
+} from "@material-ui/core";
 import { v4 as uuid } from "uuid";
 import { debounce } from "lodash";
 import Content from "../partials/Content";
@@ -8,6 +28,9 @@ import HttpClient from "../../services/Http";
 import Section from "../partials/Section";
 import ImageInput from "../partials/ImageInput";
 import CategoryItem from "../contracts/CategoryItem";
+import { Variation } from "./variations/Variation";
+import Color from "./variations/Color";
+import DropDown from "./variations/DropDown";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -50,6 +73,10 @@ const EditProductContent = () => {
     const [price, setPrice] = useState<number>(0);
     const [discountedPrice, setDiscountedPrice] = useState<number>(0);
     const [stock, setStock] = useState<number>(0);
+    const [variations, setVariations] = useState<Variation[]>([]);
+    const [variationDialog, setVariationDialog] = useState<boolean>(false);
+    const [newVariationTitle, setNewVariationTitle] = useState<string>("");
+    const [newVariationType, setNewVariationType] = useState<string>("");
 
     useEffect(() => {
         api.get<CategoryItem[]>("api/v1/categories")
@@ -93,6 +120,46 @@ const EditProductContent = () => {
         setGallery((prev: File[]) => {
             return [...prev, file];
         });
+    };
+
+    const showVariationDialog = (e: React.MouseEvent) => {
+        setVariationDialog(true);
+    };
+
+    const addVariation = (e: React.MouseEvent) => {
+        const hash = uuid();
+        setVariations((prev) => {
+            return [
+                ...prev,
+                {
+                    title: newVariationTitle,
+                    type: newVariationType,
+                    hash,
+                    items: [],
+                },
+            ];
+        });
+        setVariationDialog(false);
+    };
+
+    const addVariantItem = (hash: string, colorTitle: string, colorValue: string) => {
+        setVariations(
+            variations?.map((variation: Variation) => {
+                if (variation.hash === hash) {
+                    return {
+                        ...variation,
+                        items: [
+                            ...variation.items,
+                            {
+                                title: colorTitle,
+                                value: colorValue,
+                            },
+                        ],
+                    };
+                }
+                return variation;
+            })
+        );
     };
 
     const saveProduct = (e: React.MouseEvent) => {
@@ -148,6 +215,48 @@ const EditProductContent = () => {
 
     return (
         <Content title="ویرایش / اضافه کردن محصول">
+            <Dialog open={variationDialog}>
+                <DialogTitle>اضافه کردن متغیر محصول جدید</DialogTitle>
+                <DialogContent>
+                    <FormControl fullWidth className={styles.formRow}>
+                        <TextField
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                setNewVariationTitle(e.target.value);
+                            }}
+                            variant="outlined"
+                            id="variation_title"
+                            name="variation_title"
+                            label="عنوان متغیر محصول"
+                        />
+                    </FormControl>
+                    <FormControl component={"fieldset"}>
+                        <FormLabel component={"legend"}>نوع متغیر محصول:</FormLabel>
+                        <RadioGroup
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                setNewVariationType(e.target.value);
+                            }}
+                            aria-label="variation_type"
+                            name="variation_type"
+                        >
+                            <FormControlLabel value="color" control={<Radio />} label="رنگ" />
+                            <FormControlLabel value="dropdown" control={<Radio />} label="لیست کشویی" />
+                        </RadioGroup>
+                    </FormControl>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        color="primary"
+                        onClick={() => {
+                            setVariationDialog(false);
+                        }}
+                    >
+                        لغو
+                    </Button>
+                    <Button color="primary" onClick={addVariation}>
+                        ایجاد
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <LinearProgress variant="determinate" value={progress} style={{ marginBottom: "10px" }} />
             <FormControl fullWidth className={styles.formRow}>
                 <TextField onChange={updateTitle} variant="outlined" id="title" name="title" label="عنوان محصول" />
@@ -214,6 +323,19 @@ const EditProductContent = () => {
                         </>
                     );
                 })}
+            </Section>
+            <Section title="متغیرهای محصول">
+                {variations?.map((variation: Variation) => {
+                    if (variation.type === "color") {
+                        return <Color key={variation.hash} onAddColor={addVariantItem} hash={variation.hash} title={variation.title} items={variation.items} />;
+                    }
+                    return <DropDown key={variation.hash} onItemAdded={addVariantItem} hash={variation.hash} title={variation.title} items={variation.items} />;
+                })}
+                <ButtonGroup color="primary" aria-label="outlined primary button group">
+                    <Button onClick={showVariationDialog} variant="contained">
+                        اضافه کردن متغیر محصول
+                    </Button>
+                </ButtonGroup>
             </Section>
             <FormControl fullWidth className={styles.formRow}>
                 <Button onClick={saveProduct} variant="contained" color="primary">
