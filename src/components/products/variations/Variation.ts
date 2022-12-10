@@ -6,6 +6,7 @@ export interface VariationItem {
 export interface Variation {
     hash: string;
     title: string;
+    name: string;
     type: string;
     items: VariationItem[];
 }

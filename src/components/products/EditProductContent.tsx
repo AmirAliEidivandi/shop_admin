@@ -31,6 +31,8 @@ import CategoryItem from "../contracts/CategoryItem";
 import { Variation } from "./variations/Variation";
 import Color from "./variations/Color";
 import DropDown from "./variations/DropDown";
+import VariantSelect from "./variations/VariantSelect";
+import { validatePrice, validateTitle } from "./ProductValidator";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -61,6 +63,15 @@ interface ProductAttributes {
     attributes: AttributeItem[];
 }
 
+interface PriceVariation {
+    [index: string]: string;
+}
+
+interface PriceVariationItem {
+    items: PriceVariation;
+    price: number;
+}
+
 const EditProductContent = () => {
     const styles = useStyles();
     const api = new HttpClient();
@@ -76,7 +87,13 @@ const EditProductContent = () => {
     const [variations, setVariations] = useState<Variation[]>([]);
     const [variationDialog, setVariationDialog] = useState<boolean>(false);
     const [newVariationTitle, setNewVariationTitle] = useState<string>("");
+    const [newVariationName, setNewVariationName] = useState<string>("");
     const [newVariationType, setNewVariationType] = useState<string>("");
+    const [priceVariation, setPriceVariation] = useState<PriceVariation>();
+    const [priceVariations, setPriceVariations] = useState<PriceVariationItem[]>([]);
+    const [priceVariantDialog, setPriceVariantDialog] = useState<boolean>(false);
+    const [priceVariantAmount, setPriceVariantAmount] = useState<number>(0);
+    const [errorBag, setErrorBag] = useState<Map<string, string>>(new Map<string, string>());
 
     useEffect(() => {
         api.get<CategoryItem[]>("api/v1/categories")
@@ -90,9 +107,23 @@ const EditProductContent = () => {
     }, []);
 
     const updateTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const result = validateTitle(e.target.value);
+        if (result) {
+            setErrorBag(errorBag.set("title", result));
+        } else {
+            errorBag.delete("title");
+            setErrorBag(errorBag);
+        }
         setTitle(e.target.value);
     };
     const updatePrice = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const result = validatePrice(e.target.value);
+        if (result) {
+            setErrorBag(errorBag.set("price", result));
+        } else {
+            errorBag.delete("price");
+            setErrorBag(errorBag);
+        }
         setPrice(e.target.value as unknown as number);
     };
     const updateDiscountedPrice = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,6 +163,7 @@ const EditProductContent = () => {
             return [
                 ...prev,
                 {
+                    name: newVariationName,
                     title: newVariationTitle,
                     type: newVariationType,
                     hash,
@@ -162,6 +194,15 @@ const EditProductContent = () => {
         );
     };
 
+    const addPriceVariantItem = (name: string, value: string) => {
+        setPriceVariation((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const addPriceVariant = (e: React.MouseEvent) => {
+        setPriceVariations((preve) => [...preve, { items: priceVariation as PriceVariation, price: priceVariantAmount }]);
+        setPriceVariantDialog(false);
+    };
+
     const saveProduct = (e: React.MouseEvent) => {
         e.preventDefault();
 
@@ -171,10 +212,12 @@ const EditProductContent = () => {
         form.append("discountedPrice", discountedPrice as unknown as string);
         form.append("stock", stock as unknown as string);
         form.append("thumbnail", thumbnail as Blob);
+        form.append("attributes", JSON.stringify(productAttributes));
+        form.append("product_variations", JSON.stringify(variations));
+        form.append("price_variations", JSON.stringify(priceVariations));
         gallery.forEach((file: File) => {
             form.append("gallery[]", file as Blob);
         });
-        form.append("attributes", JSON.stringify(productAttributes));
 
         api.post("api/v1/products", form, {
             headers: {
@@ -229,6 +272,18 @@ const EditProductContent = () => {
                             label="عنوان متغیر محصول"
                         />
                     </FormControl>
+                    <FormControl fullWidth className={styles.formRow}>
+                        <TextField
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                setNewVariationName(e.target.value);
+                            }}
+                            variant="outlined"
+                            id="variation_name"
+                            name="variation_name"
+                            label="نام متغیر محصول"
+                            placeholder="مثلا color, size, material"
+                        />
+                    </FormControl>
                     <FormControl component={"fieldset"}>
                         <FormLabel component={"legend"}>نوع متغیر محصول:</FormLabel>
                         <RadioGroup
@@ -257,18 +312,81 @@ const EditProductContent = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            <Dialog open={priceVariantDialog}>
+                <DialogTitle>قیمت متغیر محصول</DialogTitle>
+                <DialogContent>
+                    <FormControl fullWidth className={styles.formRow}>
+                        <TextField
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                setPriceVariantAmount(e.target.value as unknown as number);
+                            }}
+                            variant="outlined"
+                            id="price_variant"
+                            name="price_variant"
+                            label="قیمت متغیر محصول"
+                        />
+                    </FormControl>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        color="primary"
+                        onClick={() => {
+                            setPriceVariantDialog(false);
+                        }}
+                    >
+                        لغو
+                    </Button>
+                    <Button color="primary" onClick={addPriceVariant}>
+                        ایجاد
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <LinearProgress variant="determinate" value={progress} style={{ marginBottom: "10px" }} />
             <FormControl fullWidth className={styles.formRow}>
-                <TextField onChange={updateTitle} variant="outlined" id="title" name="title" label="عنوان محصول" />
+                <TextField
+                    error={errorBag.has("title")}
+                    helperText={errorBag.has("title") && errorBag.get("title")}
+                    onChange={updateTitle}
+                    variant="outlined"
+                    id="title"
+                    name="title"
+                    label="عنوان محصول"
+                />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField onChange={updatePrice} variant="outlined" id="price" name="price" label="قیمت به ریال" />
+                <TextField
+                    error={errorBag.has("price")}
+                    helperText={errorBag.has("price") && errorBag.get("price")}
+                    onChange={updatePrice}
+                    variant="outlined"
+                    id="price"
+                    name="price"
+                    label="قیمت به ریال"
+                />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField onChange={updateDiscountedPrice} variant="outlined" id="discounted_price" name="discounted_price" defaultValue={0} label="قیمت ویژه به ریال" />
+                <TextField
+                    error={errorBag.has("discounted_price")}
+                    helperText={errorBag.has("discounted_price") && errorBag.get("discounted_price")}
+                    onChange={updateDiscountedPrice}
+                    variant="outlined"
+                    id="discounted_price"
+                    name="discounted_price"
+                    defaultValue={0}
+                    label="قیمت ویژه به ریال"
+                />
             </FormControl>
             <FormControl fullWidth className={styles.formRow}>
-                <TextField onChange={updateStock} variant="outlined" id="stock" name="stock" defaultValue={0} label="موجودی" />
+                <TextField
+                    error={errorBag.has("stock")}
+                    helperText={errorBag.has("stock") && errorBag.get("stock")}
+                    onChange={updateStock}
+                    variant="outlined"
+                    id="stock"
+                    name="stock"
+                    defaultValue={0}
+                    label="موجودی"
+                />
             </FormControl>
             <Grid xs={6}>
                 <FormControl fullWidth className={styles.formRow}>
@@ -337,6 +455,18 @@ const EditProductContent = () => {
                     </Button>
                 </ButtonGroup>
             </Section>
+            {variations.length > 0 && (
+                <Section title="متغیرهای قیمت">
+                    {variations?.map((variant: Variation) => (
+                        <VariantSelect onItemsChanged={addPriceVariantItem} name={variant.name} key={variant.hash} title={variant.title} type={variant.type} items={variant.items} />
+                    ))}
+                    <FormControl fullWidth className={styles.formRow}>
+                        <Button onClick={() => setPriceVariantDialog(true)} variant="contained" color="primary">
+                            ایجاد متغیر قیمت
+                        </Button>
+                    </FormControl>
+                </Section>
+            )}
             <FormControl fullWidth className={styles.formRow}>
                 <Button onClick={saveProduct} variant="contained" color="primary">
                     ذخیره محصول
