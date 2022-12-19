@@ -76,6 +76,7 @@ const EditProductContent = () => {
     const styles = useStyles();
     const api = new HttpClient();
     const [categories, setCategories] = useState<CategoryItem[]>([]);
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [productAttributes, setProductAttributes] = useState<ProductAttributes[]>([]);
     const [thumbnail, setThumbnail] = useState<File | null>(null);
     const [gallery, setGallery] = useState<File[]>([]);
@@ -134,13 +135,17 @@ const EditProductContent = () => {
     };
 
     const updateCategory = (e: React.ChangeEvent<{ value: unknown }>) => {
-        api.get<ProductAttributes[]>(`api/v1/categories/${e.target.value}/attributes`)
-            .then((response) => {
-                setProductAttributes(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        const categoryID = e.target.value as string;
+        if (categoryID) {
+            setSelectedCategory(categoryID);
+            api.get<ProductAttributes[]>(`api/v1/categories/${e.target.value}/attributes`)
+                .then((response) => {
+                    setProductAttributes(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
     };
 
     const updateThumbnail = (file: File) => {
@@ -212,6 +217,7 @@ const EditProductContent = () => {
         form.append("discountedPrice", discountedPrice as unknown as string);
         form.append("stock", stock as unknown as string);
         form.append("thumbnail", thumbnail as Blob);
+        form.append("category", selectedCategory);
         form.append("attributes", JSON.stringify(productAttributes));
         form.append("product_variations", JSON.stringify(variations));
         form.append("price_variations", JSON.stringify(priceVariations));
