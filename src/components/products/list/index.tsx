@@ -12,14 +12,14 @@ const ProductsList = ({ items }: ProductsListProps) => {
             <Table size="medium">
                 <TableHead>
                     <TableRow>
-                        <TableCell>تصویر</TableCell>
-                        <TableCell>عنوان</TableCell>
-                        <TableCell>قیمت</TableCell>
-                        <TableCell>موجودی</TableCell>
-                        <TableCell>وضعیت</TableCell>
-                        <TableCell>ایجاد</TableCell>
-                        <TableCell>به روزرسانی</TableCell>
-                        <TableCell>عملیات</TableCell>
+                        <TableCell align="center">تصویر</TableCell>
+                        <TableCell align="center">عنوان</TableCell>
+                        <TableCell align="center">قیمت</TableCell>
+                        <TableCell align="center">موجودی</TableCell>
+                        <TableCell align="center">وضعیت</TableCell>
+                        <TableCell align="center">ایجاد</TableCell>
+                        <TableCell align="center">به روزرسانی</TableCell>
+                        <TableCell align="center">عملیات</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

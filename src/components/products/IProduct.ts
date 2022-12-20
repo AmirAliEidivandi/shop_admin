@@ -1,5 +1,7 @@
+import ProductStatus from "./ProductStatus";
+
 export default interface IProduct {
-    _id: string
+    _id: string;
     title: string;
     price: number;
     discountedPrice: number;
@@ -12,5 +14,5 @@ export default interface IProduct {
     createdAt: Date;
     updatedAt: Date;
     stock: number;
-    status: number;
+    status: ProductStatus;
 }
