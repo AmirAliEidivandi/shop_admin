@@ -1,8 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import Categories from "../components/categories/Categories";
-import EditCategory from "../components/categories/EditCategory";
-import EditProduct from "../components/products/EditProduct";
-import Products from "../components/products/Products";
+import Categories from "src/components/categories/Categories";
+import EditCategory from "src/components/categories/EditCategory";
+import EditProduct from "src/components/products/EditProduct";
+import Products from "src/components/products/Products";
 
 interface RouteItem {
     path: string;

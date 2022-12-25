@@ -1,9 +1,9 @@
 import { TableRow, TableCell } from "@material-ui/core";
-import { toPersianCurrency } from "../../../services/Currency";
-import { toPersianNumber } from "../../../services/Lang";
+import { toPersianCurrency } from "src/services/Currency";
+import { toPersianNumber } from "src/services/Lang";
+import Status from "../Status";
 import IProduct from "../IProduct";
 import ProductStatus from "../ProductStatus";
-import Status from "../Status";
 
 const ProductItem = ({ title, thumbnail, price, stock, status, createdAt, updatedAt }: Partial<IProduct>) => {
     return (

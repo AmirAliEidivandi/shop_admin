@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Alert from "./Alert";
 import { Snackbar } from "@material-ui/core";
 import { Color } from "@material-ui/lab/Alert";
+import Alert from "./Alert";
 
 interface notifyProps {
     open: boolean;

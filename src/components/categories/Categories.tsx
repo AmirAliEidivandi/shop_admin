@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
+import Http from "src/services/Http";
+import Table from "../utils/Table";
 import Content from "../partials/Content";
-import Http from "../../services/Http";
 import SkeletonTable from "../utils/SkeletonTable";
 import CategoryItem from "../contracts/CategoryItem";
-import Table from "../utils/Table";
 
 const Categories = () => {
     const [categories, setCategories] = useState<CategoryItem[]>([]);

@@ -1,11 +1,11 @@
 import { useEffect, useState, useMemo } from "react";
-import Content from "../partials/Content";
-import SkeletonTable from "../utils/SkeletonTable";
-import HttpService from "../../services/Http";
 import { Color } from "@material-ui/lab/Alert";
-import Notify from "../partials/Notify";
+import HttpService from "src/services/Http";
 import ProductsList from "./list";
 import IProduct from "./IProduct";
+import Notify from "../partials/Notify";
+import Content from "../partials/Content";
+import SkeletonTable from "../utils/SkeletonTable";
 
 interface notifyState {
     open: boolean;

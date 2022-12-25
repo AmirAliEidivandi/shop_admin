@@ -23,16 +23,16 @@ import {
 } from "@material-ui/core";
 import { v4 as uuid } from "uuid";
 import { debounce } from "lodash";
-import Content from "../partials/Content";
-import HttpClient from "../../services/Http";
-import Section from "../partials/Section";
-import ImageInput from "../partials/ImageInput";
-import CategoryItem from "../contracts/CategoryItem";
+import HttpClient from "src/services/Http";
 import { Variation } from "./variations/Variation";
 import Color from "./variations/Color";
 import DropDown from "./variations/DropDown";
 import VariantSelect from "./variations/VariantSelect";
 import { validatePrice, validateTitle } from "./ProductValidator";
+import Content from "../partials/Content";
+import Section from "../partials/Section";
+import ImageInput from "../partials/ImageInput";
+import CategoryItem from "../contracts/CategoryItem";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -75,25 +75,25 @@ interface PriceVariationItem {
 const EditProductContent = () => {
     const styles = useStyles();
     const api = new HttpClient();
-    const [categories, setCategories] = useState<CategoryItem[]>([]);
-    const [selectedCategory, setSelectedCategory] = useState<string>("");
-    const [productAttributes, setProductAttributes] = useState<ProductAttributes[]>([]);
-    const [thumbnail, setThumbnail] = useState<File | null>(null);
-    const [gallery, setGallery] = useState<File[]>([]);
-    const [progress, setProgress] = useState<number>(0);
-    const [title, setTitle] = useState<string>("");
-    const [price, setPrice] = useState<number>(0);
-    const [discountedPrice, setDiscountedPrice] = useState<number>(0);
-    const [stock, setStock] = useState<number>(0);
     const [variations, setVariations] = useState<Variation[]>([]);
-    const [variationDialog, setVariationDialog] = useState<boolean>(false);
+    const [categories, setCategories] = useState<CategoryItem[]>([]);
+    const [productAttributes, setProductAttributes] = useState<ProductAttributes[]>([]);
+    const [priceVariation, setPriceVariation] = useState<PriceVariation>();
+    const [priceVariations, setPriceVariations] = useState<PriceVariationItem[]>([]);
+    const [title, setTitle] = useState<string>("");
+    const [selectedCategory, setSelectedCategory] = useState<string>("");
     const [newVariationTitle, setNewVariationTitle] = useState<string>("");
     const [newVariationName, setNewVariationName] = useState<string>("");
     const [newVariationType, setNewVariationType] = useState<string>("");
-    const [priceVariation, setPriceVariation] = useState<PriceVariation>();
-    const [priceVariations, setPriceVariations] = useState<PriceVariationItem[]>([]);
-    const [priceVariantDialog, setPriceVariantDialog] = useState<boolean>(false);
+    const [stock, setStock] = useState<number>(0);
+    const [price, setPrice] = useState<number>(0);
+    const [progress, setProgress] = useState<number>(0);
+    const [discountedPrice, setDiscountedPrice] = useState<number>(0);
     const [priceVariantAmount, setPriceVariantAmount] = useState<number>(0);
+    const [gallery, setGallery] = useState<File[]>([]);
+    const [thumbnail, setThumbnail] = useState<File | null>(null);
+    const [variationDialog, setVariationDialog] = useState<boolean>(false);
+    const [priceVariantDialog, setPriceVariantDialog] = useState<boolean>(false);
     const [errorBag, setErrorBag] = useState<Map<string, string>>(new Map<string, string>());
 
     useEffect(() => {

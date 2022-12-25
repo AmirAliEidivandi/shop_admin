@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Box } from "@material-ui/core";
-import placeholder from "../../assets/images/placeholder.jpg";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import placeholder from "src/assets/images/placeholder.jpg";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

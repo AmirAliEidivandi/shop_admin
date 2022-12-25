@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, Typography, Divider, FormControl, Button, IconButton, Snackbar } from "@material-ui/core";
+import { Box, Typography, Divider, FormControl, Button, IconButton } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AddBox, Delete } from "@material-ui/icons";
-import AttributeItem from "./AttributeItem";
-import Attribute from "./Attribute";
 import { v4 as uuid } from "uuid";
-import { useCategoriesState } from "../context";
+import Attribute from "./Attribute";
+import AttributeItem from "./AttributeItem";
 import AttributeGroupInterface from "./AttributeGroupInterface";
+import { useCategoriesState } from "../context";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { List, ListItem, ListItemText, ListItemIcon, Collapse } from "@material-ui/core";
 import { Store, ExpandLess, ExpandMore, List as ListIcon, AddBox, RedeemRounded, Category } from "@material-ui/icons";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme: Theme) =>
 const Products = () => {
     const [open, setOpen] = useState(true);
     const classes = useStyles();
-    
+
     return (
         <React.Fragment>
             <ListItem

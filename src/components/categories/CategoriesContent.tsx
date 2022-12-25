@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { FormControl, TextField, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Snackbar } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AddBox, Save } from "@material-ui/icons";
+import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { v4 as uuid } from "uuid";
+import Http from "src/services/Http";
 import Content from "../partials/Content";
 import { useCategoriesState } from "./context";
 import AttributeGroup from "./attribute/AttributeGroup";
-import { v4 as uuid } from "uuid";
-// import axios from "axios";
-import Http from "../../services/Http";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
