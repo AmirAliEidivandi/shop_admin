@@ -22,7 +22,7 @@ const Categories = () => {
     return (
         <Content title="لیست دسته بندی ها">
             {isLoading && <SkeletonTable />}
-            {!isLoading && <Table columns={["اسلاگ", "عنوان"]} data={categories} attributes={["title", "slug"]} />}
+            {!isLoading && <Table columns={["عنوان", "اسلاگ"]} data={categories} attributes={["title", "slug"]} />}
         </Content>
     );
 };
