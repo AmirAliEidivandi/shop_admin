@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Categories from "src/components/categories/Categories";
 import EditCategory from "src/components/categories/EditCategory";
+import OrderDetails from "src/components/orders/OrderDetails";
 import Orders from "src/components/orders/Orders";
 import EditProduct from "src/components/products/EditProduct";
 import Products from "src/components/products/Products";
@@ -31,6 +32,10 @@ const routes: RouteItem[] = [
         path: "/orders",
         component: <Orders />,
     },
+    {
+        path: '/orders/:orderID',
+        component: <OrderDetails />,
+    }
 ];
 
 const RenderRoutes = () => {

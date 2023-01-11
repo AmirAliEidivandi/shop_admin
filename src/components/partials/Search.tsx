@@ -9,7 +9,7 @@ interface SearchProps {
 const Search = ({ label, onChange }: SearchProps) => {
     const performSearch = debounce((keyword: string) => {
         onChange(keyword);
-    }, 700);
+    }, 500);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         performSearch(e.target.value);
     };

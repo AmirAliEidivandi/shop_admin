@@ -15,4 +15,12 @@ export default class Http {
     public get<T, R = AxiosResponse<T>>(endpoint: string, config?: AxiosRequestConfig): Promise<R> {
         return this.instance.get(`${this.baseURL}${endpoint}`, config);
     }
+
+    public put<T, B, R = AxiosResponse<T>>(endpoint: string, data?: B, config?: AxiosRequestConfig): Promise<R> {
+        return this.instance.put(`${this.baseURL}${endpoint}`, data, config);
+    }
+
+    public patch<T, B = {}, R = AxiosResponse<T>>(endpoint: string, data?: B, config?: AxiosRequestConfig): Promise<R> {
+        return this.instance.patch(`${this.baseURL}${endpoint}`, data, config);
+    }
 }
