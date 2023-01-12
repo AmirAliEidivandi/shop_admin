@@ -8,6 +8,7 @@ import Orders from "src/components/orders/Orders";
 import Payments from "src/components/payments/Payments";
 import EditProduct from "src/components/products/EditProduct";
 import Products from "src/components/products/Products";
+import Shipments from "src/components/shipments/Shipments";
 
 interface RouteItem {
     path: string;
@@ -51,6 +52,10 @@ const routes: RouteItem[] = [
         path: "/coupons/new",
         component: <NewCoupon />,
     },
+    {
+        path: "/shipments",
+        component: <Shipments />
+    }
 ];
 
 const RenderRoutes = () => {
