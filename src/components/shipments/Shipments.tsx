@@ -3,11 +3,12 @@ import { makeStyles, Theme } from "@material-ui/core";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Pagination } from "@material-ui/lab";
 import QueryStringManager from "query-string";
-import HttpService from "src/services/Http";
-import IPagination from "../contracts/IPagination";
+import ShipmentsList from "./list";
 import IShipment from "./IShipment";
 import Content from "../partials/Content";
-import ShipmentsList from "./list";
+import HttpService from "src/services/Http";
+import IPagination from "../contracts/IPagination";
+import QueryStringInterface from "../contracts/QueryStringInterface";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {
@@ -17,10 +18,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
     },
 }));
-
-interface QueryStringInterface {
-    [key: string]: string | number;
-}
 
 const Shipments = () => {
     const classes = useStyles();

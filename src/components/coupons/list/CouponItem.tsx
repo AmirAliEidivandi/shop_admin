@@ -11,6 +11,7 @@ const CouponItem = (props: ICoupon) => {
             <TableCell align="center">{toPersianNumber(props.limit)}</TableCell>
             <TableCell align="center">{toPersianNumber(props.expiresAt)}</TableCell>
             <TableCell align="center">{<Status status={props.status} />}</TableCell>
+            <TableCell align="center"></TableCell>
         </TableRow>
     );
 };

@@ -16,7 +16,7 @@ const SettingList = ({ list }: SettingsListProps) => {
                         <TableCell align="center">مقدار</TableCell>
                         <TableCell align="center">نوع</TableCell>
                         <TableCell align="center">نسخه</TableCell>
-                        <TableCell align="center">ورژن</TableCell>
+                        <TableCell align="center">عملیات</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

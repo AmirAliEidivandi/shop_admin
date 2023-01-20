@@ -1,28 +1,60 @@
 import { useState, useEffect, useMemo } from "react";
+import { Pagination } from "@material-ui/lab";
+import QueryStringManager from "query-string";
 import Content from "../partials/Content";
 import CommentsList from "./list";
 import HttpService from "src/services/Http";
 import IComment from "./IComment";
+import { useLocation, useNavigate } from "react-router-dom";
+import IPagination from "../contracts/IPagination";
+import { makeStyles, Theme } from "@material-ui/core";
+import QueryStringInterface from "../contracts/QueryStringInterface";
+
+const useStyles = makeStyles((theme: Theme) => ({
+    root: {
+        "& > *": {
+            marginTop: theme.spacing(3),
+            justifyContent: "center",
+        },
+    },
+}));
 
 const Comments = () => {
+    const classes = useStyles();
     const httpService = useMemo(() => new HttpService(), []);
     const [comments, setComments] = useState<IComment[]>([]);
+    const [pagination, setPagination] = useState<IPagination | null>(null);
+    const queryStringData: QueryStringInterface = useMemo(() => ({}), []);
+    const location = useLocation();
+    const history = useNavigate();
 
     useEffect(() => {
+        const queryString = QueryStringManager.stringify(queryStringData);
         const fetchComments = () => {
             httpService
-                .get<IComment[]>("api/v1/comments")
+                .get<{ _metadata: IPagination; data: IComment[] }>(`api/v1/comments?${queryString}`)
                 .then((res) => {
-                    setComments(res.data);
+                    setComments(res.data.data);
+                    setPagination(res.data._metadata);
                 })
                 .catch((err) => console.log(err));
         };
         fetchComments();
-    }, []);
+    }, [location]);
+    const handlePagination = (e: React.ChangeEvent<unknown>, value: number) => {
+        queryStringData.page = value;
+        updateLocation();
+    };
+    const updateLocation = () => {
+        history({
+            search: `?${QueryStringManager.stringify(queryStringData)}`,
+        });
+    };
 
     return (
         <Content title="لیست دیدگاه ها">
             <CommentsList items={comments} />
+            <Pagination color="primary" size="large" shape="rounded" className={classes.root} count={pagination?.totalPages} onChange={handlePagination} />
         </Content>
     );
 };
