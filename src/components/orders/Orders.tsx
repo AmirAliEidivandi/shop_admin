@@ -3,12 +3,12 @@ import { Pagination } from "@material-ui/lab";
 import { makeStyles, Theme } from "@material-ui/core";
 import { useLocation, useNavigate } from "react-router-dom";
 import QueryStringManager from "query-string";
-import HttpService from "src/services/Http";
-import OrdersList from "./list";
 import IOrder from "./IOrder";
-import Content from "../partials/Content";
-import IPagination from "../contracts/IPagination";
+import OrdersList from "./list";
 import Search from "../partials/Search";
+import Content from "../partials/Content";
+import HttpService from "@/services/Http";
+import IPagination from "../contracts/IPagination";
 
 const useStyles = makeStyles((theme: Theme) => ({
     root: {

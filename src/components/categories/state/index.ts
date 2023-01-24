@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import Action from "src/contracts/Action";
+import Action from "@/contracts/Action";
 import AttributeGroupInterface from "../attribute/AttributeGroupInterface";
 
 export interface CategoriesState {

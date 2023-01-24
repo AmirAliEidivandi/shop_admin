@@ -23,12 +23,12 @@ import {
 } from "@material-ui/core";
 import { v4 as uuid } from "uuid";
 import { debounce } from "lodash";
-import HttpClient from "src/services/Http";
 import { Variation } from "./variations/Variation";
+import { validatePrice, validateTitle } from "./ProductValidator";
+import HttpClient from "@/services/Http";
 import Color from "./variations/Color";
 import DropDown from "./variations/DropDown";
 import VariantSelect from "./variations/VariantSelect";
-import { validatePrice, validateTitle } from "./ProductValidator";
 import Content from "../partials/Content";
 import Section from "../partials/Section";
 import ImageInput from "../partials/ImageInput";

@@ -6,7 +6,7 @@ import QueryStringManager from "query-string";
 import SettingList from "./list";
 import ISetting from "./ISetting";
 import Content from "../partials/Content";
-import HttpService from "src/services/Http";
+import HttpService from "@/services/Http";
 import IPagination from "../contracts/IPagination";
 import QueryStringInterface from "../contracts/QueryStringInterface";
 

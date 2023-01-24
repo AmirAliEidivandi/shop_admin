@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
 import { Typography, Divider, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, FormControl, InputLabel, Select, MenuItem, Button } from "@material-ui/core";
-import Content from "../partials/Content";
+import { useParams } from "react-router-dom";
 import IOrder from "./IOrder";
-import HttpService from "src/services/Http";
 import IOrderLines from "./IOrderLines";
 import OrderStatus from "./OrderStatus";
+import Content from "../partials/Content";
+import HttpService from "@/services/Http";
 
 const OrderDetails = () => {
     const { orderID } = useParams();

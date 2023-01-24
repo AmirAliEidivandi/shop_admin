@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Grid } from "@material-ui/core";
-import RTL from "src/theme/rtl";
-import RenderRoutes from "src/routes/routes";
+import RTL from "@/theme/rtl";
+import RenderRoutes from "@/routes/routes";
 import SideBar from "../partials/SideBar";
 
 const Panel: React.FC = (): JSX.Element => {

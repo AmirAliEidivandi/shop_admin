@@ -1,6 +1,6 @@
 import { TableRow, TableCell } from "@material-ui/core";
-import { toPersianCurrency } from "src/services/Currency";
-import { toPersianNumber } from "src/services/Lang";
+import { toPersianCurrency } from "@/services/Currency";
+import { toPersianNumber } from "@/services/Lang";
 import Status from "../Status";
 import IProduct from "../IProduct";
 import ProductStatus from "../ProductStatus";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Http from "src/services/Http";
+import Http from "@/services/Http";
 import Table from "../utils/Table";
 import Content from "../partials/Content";
 import SkeletonTable from "../utils/SkeletonTable";

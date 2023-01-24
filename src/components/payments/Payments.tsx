@@ -3,10 +3,10 @@ import { Pagination } from "@material-ui/lab";
 import { makeStyles, Theme } from "@material-ui/core";
 import { useLocation, useNavigate } from "react-router-dom";
 import QueryStringManager from "query-string";
-import Content from "../partials/Content";
 import IPayment from "./IPayment";
 import PaymentsList from "./list";
-import HttpService from "src/services/Http";
+import HttpService from "@/services/Http";
+import Content from "../partials/Content";
 import IPagination from "../contracts/IPagination";
 
 const useStyles = makeStyles((theme: Theme) => ({

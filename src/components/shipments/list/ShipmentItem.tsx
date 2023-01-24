@@ -1,5 +1,5 @@
 import { TableRow, TableCell } from "@material-ui/core";
-import { toPersianNumber } from "src/services/Lang";
+import { toPersianNumber } from "@/services/Lang";
 import IShipment from "../IShipment";
 import ShipmentStatus from "../ShipmentStatus";
 import Status from "../Status";

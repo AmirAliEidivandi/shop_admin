@@ -1,5 +1,5 @@
 import { TableCell, TableRow } from "@material-ui/core";
-import { toPersianNumber } from "src/services/Lang";
+import { toPersianNumber } from "@/services/Lang";
 import ICoupon from "../ICoupon";
 import Status from "../Status";
 

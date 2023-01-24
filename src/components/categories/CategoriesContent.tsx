@@ -4,7 +4,7 @@ import { Alert } from "@material-ui/lab";
 import { AddBox, Save } from "@material-ui/icons";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { v4 as uuid } from "uuid";
-import Http from "src/services/Http";
+import Http from "@/services/Http";
 import Content from "../partials/Content";
 import { useCategoriesState } from "./context";
 import AttributeGroup from "./attribute/AttributeGroup";

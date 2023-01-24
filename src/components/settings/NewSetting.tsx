@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Button, createStyles, FormControl, FormControlLabel, FormLabel, Grid, makeStyles, Radio, RadioGroup, TextField, Theme } from "@material-ui/core";
-import HttpService from "src/services/Http";
+import HttpService from "@/services/Http";
 import Content from "../partials/Content";
 
 const useStyles = makeStyles((theme: Theme) =>

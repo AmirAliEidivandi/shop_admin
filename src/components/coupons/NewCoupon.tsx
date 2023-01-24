@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Button, Checkbox, createStyles, FormControl, FormControlLabel, Grid, makeStyles, TextField, Theme } from "@material-ui/core";
-import HttpService from "src/services/Http";
+import HttpService from "@/services/Http";
 import Content from "../partials/Content";
 import Section from "../partials/Section";
 

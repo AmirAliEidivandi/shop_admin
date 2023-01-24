@@ -1,13 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { makeStyles, Theme } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import QueryStringManager from "query-string";
-import Content from "../partials/Content";
 import CommentsList from "./list";
-import HttpService from "src/services/Http";
 import IComment from "./IComment";
-import { useLocation, useNavigate } from "react-router-dom";
+import HttpService from "@/services/Http";
+import Content from "../partials/Content";
 import IPagination from "../contracts/IPagination";
-import { makeStyles, Theme } from "@material-ui/core";
 import QueryStringInterface from "../contracts/QueryStringInterface";
 
 const useStyles = makeStyles((theme: Theme) => ({

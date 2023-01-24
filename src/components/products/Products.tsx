@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { Color } from "@material-ui/lab/Alert";
-import HttpService from "src/services/Http";
+import HttpService from "@/services/Http";
 import ProductsList from "./list";
 import IProduct from "./IProduct";
 import Notify from "../partials/Notify";

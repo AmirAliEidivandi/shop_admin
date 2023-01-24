@@ -1,6 +1,6 @@
 import { TableRow, TableCell, Button } from "@material-ui/core";
-import { toPersianNumber } from "src/services/Lang";
-import { toPersianCurrency } from "src/services/Currency";
+import { toPersianNumber } from "@/services/Lang";
+import { toPersianCurrency } from "@/services/Currency";
 import { Link } from "react-router-dom";
 import Status from "../Status";
 import IOrder from "../IOrder";
